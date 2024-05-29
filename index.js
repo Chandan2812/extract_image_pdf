@@ -9,6 +9,21 @@ const pako = require('pako');
 const app = express();
 const upload = multer({ dest: 'uploads/' });
 
+const PngColorTypes = {
+  Grayscale: 0,
+  Rgb: 2,
+  IndexedColor: 3,
+  GrayscaleAlpha: 4,
+  RgbAlpha: 6
+};
+
+const ComponentsPerPixelOfColorType = {
+  [PngColorTypes.Grayscale]: 1,
+  [PngColorTypes.Rgb]: 3,
+  [PngColorTypes.IndexedColor]: 1,
+  [PngColorTypes.GrayscaleAlpha]: 2,
+  [PngColorTypes.RgbAlpha]: 4
+};
 
 
 // Handle file upload and conversion
@@ -159,7 +174,13 @@ app.post('/convert', upload.single('pdf'), async (req, res) => {
         }
       }
 
-      console.log('Images written to ./images');
+      fs.unlink(pdfPath, err => {
+        if (err) {
+            console.error('Error deleting PDF file:', err);
+        } else {
+            console.log('PDF file deleted successfully');
+        }
+    });
       res.json(imageFiles);
     });
   } catch (error) {
