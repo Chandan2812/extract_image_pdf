@@ -9,10 +9,7 @@ const pako = require('pako');
 const app = express();
 const upload = multer({ dest: 'uploads/' });
 
-// Serve the HTML page
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
+
 
 // Handle file upload and conversion
 app.post('/convert', upload.single('pdf'), async (req, res) => {
