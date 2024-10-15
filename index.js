@@ -7,9 +7,12 @@ const { PDFDocumentFactory, PDFName, PDFRawStream } = require('pdf-lib');
 const { PNG } = require('pngjs');
 const pako = require('pako');
 const path = require('path');
+const cors = require('cors')
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
+
+app.use(cors());
 
 // Handle file upload and conversion
 app.post('/convert', upload.single('pdf'), async (req, res) => {
